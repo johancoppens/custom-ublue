@@ -8,6 +8,21 @@ systemctl enable podman.socket || true
 if [[ "${ENABLE_FIRSTBOOT_USER:-1}" == "1" ]]; then
   mkdir -p /etc/schoolbx
   touch /etc/schoolbx/enable-firstboot-user
+
+  echo "Enabling firstboot user creation"
+  systemctl enable schoolbx-firstboot-user.service
+
+  echo "Setting locale and keyboard for testing"
+  echo "LANG=nl_BE.UTF-8" > /etc/locale.conf
+  echo "KEYMAP=be" > /etc/vconsole.conf
+  mkdir -p /etc/X11/xorg.conf.d
+  cat > /etc/X11/xorg.conf.d/00-keyboard.conf <<EOF
+Section "InputClass"
+        Identifier "system-keyboard"
+        MatchIsKeyboard "on"
+        Option "XkbLayout" "be"
+EndSection
+EOF
 fi
 
 # Ensure first-boot script is executable and service is enabled
