@@ -13,12 +13,18 @@ user-db:user
 system-db:local
 EOF
 
-# Set default: appmenu : minimize, maximize, close
+# Set dconf defaults
 cat >/etc/dconf/db/local.d/00-schoolbx <<'EOF'
 [org/gnome/desktop/wm/preferences]
 button-layout='appmenu:minimize,maximize,close'
-EOF
 
+[org/gnome/nautilus/list-view]
+use-tree-view=true
+default-zoom-level='small'
+
+[org/gnome/nautilus/icon-view]
+default-zoom-level='standard'
+EOF
 
 # Apply changes to the dconf databases
 if command -v dconf >/dev/null 2>&1; then
