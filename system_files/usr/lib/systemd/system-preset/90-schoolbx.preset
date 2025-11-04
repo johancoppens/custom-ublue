@@ -1,0 +1,2 @@
+# Enable first-boot user creation for VM testing
+enable schoolbx-firstboot-user.service

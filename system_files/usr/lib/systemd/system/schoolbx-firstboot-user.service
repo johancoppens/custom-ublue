@@ -1,0 +1,14 @@
+[Unit]
+Description=SchoolBX first boot: create local test user
+ConditionPathExists=!/var/lib/schoolbx/user-created
+ConditionPathExists=/etc/schoolbx/enable-firstboot-user
+After=local-fs.target systemd-firstboot.service
+Before=display-manager.service getty@tty1.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/schoolbx-firstboot-user.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

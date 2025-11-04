@@ -1,4 +1,5 @@
-export image_name := env("IMAGE_NAME", "image-template") # output image name, usually same as repo name, change as needed
+export image_name := env("IMAGE_NAME", "schoolbx-os")
+export pull_policy := env("PULL", "newer")
 export default_tag := env("DEFAULT_TAG", "latest")
 export bib_image := env("BIB_IMAGE", "quay.io/centos-bootc/bootc-image-builder:latest")
 
@@ -42,7 +43,7 @@ clean:
     rm -f previous.manifest.json
     rm -f changelog.md
     rm -f output.env
-    rm -f output/
+    rm -rf output/
 
 # Sudo Clean Repo
 [group('Utility')]
@@ -96,7 +97,58 @@ build $target_image=image_name $tag=default_tag:
 
     podman build \
         "${BUILD_ARGS[@]}" \
-        --pull=newer \
+        --pull={{ pull_policy }} \
+        --tag "${target_image}:${tag}" \
+        .
+
+# Build the image without using cache (forces fresh layers)
+build-clean $target_image=image_name $tag=default_tag:
+    #!/usr/bin/env bash
+
+    BUILD_ARGS=()
+    if [[ -z "$(git status -s)" ]]; then
+        BUILD_ARGS+=("--build-arg" "SHA_HEAD_SHORT=$(git rev-parse --short HEAD)")
+    fi
+
+    podman build \
+        "${BUILD_ARGS[@]}" \
+        --no-cache \
+        --pull={{ pull_policy }} \
+        --tag "${target_image}:${tag}" \
+        .
+
+# Build a production image (disables first-boot user) with optional pull policy
+build-prod $target_image=image_name $tag=default_tag:
+    #!/usr/bin/env bash
+
+    BUILD_ARGS=(
+        --build-arg ENABLE_FIRSTBOOT_USER=0
+    )
+    if [[ -z "$(git status -s)" ]]; then
+        BUILD_ARGS+=("--build-arg" "SHA_HEAD_SHORT=$(git rev-parse --short HEAD)")
+    fi
+
+    podman build \
+        "${BUILD_ARGS[@]}" \
+        --pull={{ pull_policy }} \
+        --tag "${target_image}:${tag}" \
+        .
+
+# Build a production image without using cache (forces fresh layers)
+build-prod-clean $target_image=image_name $tag=default_tag:
+    #!/usr/bin/env bash
+
+    BUILD_ARGS=(
+        --build-arg ENABLE_FIRSTBOOT_USER=0
+    )
+    if [[ -z "$(git status -s)" ]]; then
+        BUILD_ARGS+=("--build-arg" "SHA_HEAD_SHORT=$(git rev-parse --short HEAD)")
+    fi
+
+    podman build \
+        "${BUILD_ARGS[@]}" \
+        --no-cache \
+        --pull={{ pull_policy }} \
         --tag "${target_image}:${tag}" \
         .
 
@@ -168,7 +220,11 @@ _build-bib $target_image $tag $type $config: (_rootful_load_image target_image t
 
     BUILDTMP=$(mktemp -p "${PWD}" -d -t _build-bib.XXXXXXXXXX)
 
-    sudo podman run \
+    # Ensure host-side caches exist to avoid mount/statfs errors
+    CACHE_DIR=${XDG_CACHE_HOME:-"${HOME}/.cache"}
+    mkdir -p "${CACHE_DIR}/osbuild" "${CACHE_DIR}/ostree"
+
+        sudo podman run \
       --rm \
       -it \
       --privileged \
@@ -178,11 +234,15 @@ _build-bib $target_image $tag $type $config: (_rootful_load_image target_image t
       -v $(pwd)/${config}:/config.toml:ro \
       -v $BUILDTMP:/output \
       -v /var/lib/containers/storage:/var/lib/containers/storage \
+            -v ${CACHE_DIR}/osbuild:/var/cache/osbuild \
+            -v ${CACHE_DIR}/ostree:/var/cache/ostree \
       "${bib_image}" \
       ${args} \
       "${target_image}:${tag}"
 
     mkdir -p output
+    # Replace any previous build output for common types to avoid mv errors on non-empty dirs
+    sudo rm -rf output/qcow2 output/raw output/bootiso || true
     sudo mv -f $BUILDTMP/* output/
     sudo rmdir $BUILDTMP
     sudo chown -R $USER:$USER output/
@@ -260,7 +320,7 @@ _run-vm $target_image $tag $type $config:
     run_args+=(docker.io/qemux/qemu)
 
     # Run the VM and open the browser to connect
-    (sleep 30 && xdg-open http://localhost:"$port") &
+    (sleep 30 && xdg-open "http://localhost:${port}/vnc.html?autoconnect=1&resize=remote") &
     podman run "${run_args[@]}"
 
 # Run a virtual machine from a QCOW2 image
@@ -292,7 +352,6 @@ spawn-vm rebuild="0" type="qcow2" ram="6G":
       --network-user-mode \
       --vsock=false --pass-ssh-key=false \
       -i ./output/**/*.{{ type }}
-
 
 # Runs shell check on all Bash scripts
 lint:

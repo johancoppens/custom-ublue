@@ -126,9 +126,14 @@ This should queue your image for the next reboot, which you can do immediately a
 
 The [Containerfile](./Containerfile) defines the operations used to customize the selected image.This file is the entrypoint for your image build, and works exactly like a regular podman Containerfile. For reference, please see the [Podman Documentation](https://docs.podman.io/en/latest/Introduction.html).
 
-## build.sh
+## Build scripts
 
-The [build.sh](./build_files/build.sh) file is called from your Containerfile. It is the best place to install new packages or make any other customization to your system. There are customization examples contained within it for your perusal.
+This template uses a two-phase build for better caching and faster rebuilds:
+
+- `build_files/01-packages.sh`: Install packages and make heavy changes. This runs before copying `system_files` so it stays cached when you tweak configs.
+- `build_files/02-config.sh`: Do lightweight configuration (enable services, set flags, permissions) that should run after system files are in place.
+
+Adjust these scripts to add or remove packages and to apply image configuration.
 
 ## build.yml
 
