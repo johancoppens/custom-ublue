@@ -1,0 +1,12 @@
+[org.gnome.desktop.background]
+picture-uri='file:///usr/share/backgrounds/coolbx/abstract.png'
+picture-uri-dark='file:///usr/share/backgrounds/coolbx/window.png'
+
+[org.gnome.desktop.wm.preferences]
+button-layout='appmenu:minimize,maximize,close'
+
+[org.gnome.nautilus.list-view]
+use-tree-view=true
+default-zoom-level='small'
+
+

@@ -1,0 +1,2 @@
+# Lock the login screen logo so that it cannot be overridden by user settings
+/org/gnome/login-screen/logo

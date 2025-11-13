@@ -30,3 +30,5 @@ chmod 0755 /usr/libexec/schoolbx-firstboot-user.sh || true
 mkdir -p /usr/lib/systemd/system/multi-user.target.wants
 ln -sf /usr/lib/systemd/system/schoolbx-firstboot-user.service \
   /usr/lib/systemd/system/multi-user.target.wants/schoolbx-firstboot-user.service || true
+
+

@@ -17,43 +17,29 @@ EOF
 
 # Package selection (documented)
 packages=(
-  # Browser (Chromium-based)
-  chromium
-
-  # Core IPC and desktop session helpers
-  dbus-daemon
-  network-manager-applet
-
-  # Locale support
-  glibc-langpack-en
-  glibc-langpack-nl
-
-  # Display/login manager and GNOME desktop
-  gdm
-  gnome-shell
-  gnome-session
-  gnome-control-center
-  gnome-terminal
-  nautilus
-  gnome-settings-daemon
-
-  # Fonts
-  dejavu-sans-mono-fonts
-
-  # Power management
-  power-profiles-daemon
-
-  # GVFS backends
-  gvfs
-  gvfs-afc
-  gvfs-mtp
-  gvfs-smb
-
-  # Dconf tooling (for system-wide defaults)
-  dconf
-
-  # Bootable containers tooling
-  bootc
+    "chromium"
+    "dbus-daemon"
+    "network-manager-applet"
+    "glibc-langpack-en"
+    "glibc-langpack-nl"
+    "gdm"
+    "gnome-shell"
+    "gnome-session"
+    "gnome-control-center"
+    "gnome-terminal"
+    "nautilus"
+    "gnome-settings-daemon"
+    "dejavu-sans-mono-fonts"
+    "power-profiles-daemon"
+    "gvfs"
+    "gvfs-afc"
+    "gvfs-mtp"
+    "gvfs-smb"
+    "dconf"
+    "bootc"
+    "plymouth-plugin-script"
+    "libreoffice"
+    "libreoffice-langpack-nl"
 )
 
 echo "Installing packages..."

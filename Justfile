@@ -311,10 +311,10 @@ _run-vm $target_image $tag $type $config:
     run_args+=(--pull=newer)
     run_args+=(--publish "127.0.0.1:${port}:8006")
     run_args+=(--env "CPU_CORES=4")
-    run_args+=(--env "RAM_SIZE=8G")
-    run_args+=(--env "DISK_SIZE=64G")
+    run_args+=(--env "RAM_SIZE=16G")
+    run_args+=(--env "DISK_SIZE=20G")
     run_args+=(--env "TPM=Y")
-    run_args+=(--env "GPU=Y")
+    run_args+=(--env "GPU=N")
     run_args+=(--device=/dev/kvm)
     run_args+=(--volume "${PWD}/${image_file}":"/boot.${type}")
     run_args+=(docker.io/qemux/qemu)
@@ -334,6 +334,12 @@ run-vm-raw $target_image=("localhost/" + image_name) $tag=default_tag: && (_run-
 # Run a virtual machine from an ISO
 [group('Run Virtal Machine')]
 run-vm-iso $target_image=("localhost/" + image_name) $tag=default_tag: && (_run-vm target_image tag "iso" "disk_config/iso.toml")
+
+# Execute a command in the container
+[group('Utility')]
+exec *args:
+    #!/usr/bin/env bash
+    podman run --rm -it --entrypoint="" "{{image_name}}:{{default_tag}}" {{args}}
 
 # Run a virtual machine using systemd-vmspawn
 [group('Run Virtal Machine')]

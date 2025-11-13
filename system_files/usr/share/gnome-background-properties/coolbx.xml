@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
+<wallpapers>
+    <wallpaper deleted="false">
+        <name>Abstract</name>
+        <filename>/usr/share/backgrounds/coolbx/abstract.png</filename>
+        <filename-dark>/usr/share/backgrounds/coolbx/abstract.png</filename-dark>
+        <options>zoom</options>
+    </wallpaper>
+    <wallpaper deleted="false">
+        <name>Archi</name>
+        <filename>/usr/share/backgrounds/coolbx/archi.png</filename>
+        <filename-dark>/usr/share/backgrounds/coolbx/archi.png</filename-dark>
+        <options>zoom</options>
+    </wallpaper>
+    <wallpaper deleted="false">
+        <name>Bridge</name>
+        <filename>/usr/share/backgrounds/coolbx/bridge.png</filename>
+        <filename-dark>/usr/share/backgrounds/coolbx/bridge.png</filename-dark>
+        <options>zoom</options>
+    </wallpaper>
+    <wallpaper deleted="false">
+        <name>Mist</name>
+        <filename>/usr/share/backgrounds/coolbx/mist.png</filename>
+        <filename-dark>/usr/share/backgrounds/coolbx/mist.png</filename-dark>
+        <options>zoom</options>
+    </wallpaper>
+    <wallpaper deleted="false">
+        <name>Plant</name>
+        <filename>/usr/share/backgrounds/coolbx/plant.png</filename>
+        <filename-dark>/usr/share/backgrounds/coolbx/plant.png</filename-dark>
+        <options>zoom</options>
+    </wallpaper>
+    <wallpaper deleted="false">
+        <name>Snow</name>
+        <filename>/usr/share/backgrounds/coolbx/snow.png</filename>
+        <filename-dark>/usr/share/backgrounds/coolbx/snow.png</filename-dark>
+        <options>zoom</options>
+    </wallpaper>
+    <wallpaper deleted="false">
+        <name>Window</name>
+        <filename>/usr/share/backgrounds/coolbx/window.png</filename>
+        <filename-dark>/usr/share/backgrounds/coolbx/window.png</filename-dark>
+        <options>zoom</options>
+    </wallpaper>
+</wallpapers>
