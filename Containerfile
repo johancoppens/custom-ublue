@@ -1,6 +1,7 @@
 # Allow build scripts to be referenced without being copied into the final image
 FROM scratch AS ctx
 COPY build_files /
+COPY local-rpms /rpms
 
 # Base Image
 # FROM ghcr.io/ublue-os/bazzite:stable
@@ -12,9 +13,9 @@ ARG SHA_HEAD_SHORT=local
 ARG IMAGE_VERSION=latest
 ARG ENABLE_FIRSTBOOT_USER=1
 LABEL \
-    org.opencontainers.image.title="SchoolBX OS" \
-    org.opencontainers.image.description="Fedora Atomic bootable container image with GNOME and Chromium for testing and development" \
-    org.opencontainers.image.vendor="SchoolBX" \
+    org.opencontainers.image.title="coolbx OS" \
+    org.opencontainers.image.description="Fedora bootable container image with GNOME and Chromium" \
+    org.opencontainers.image.vendor="coolbx" \
     org.opencontainers.image.licenses="MIT" \
     org.opencontainers.image.version="${IMAGE_VERSION}" \
     org.opencontainers.image.revision="${SHA_HEAD_SHORT}" \

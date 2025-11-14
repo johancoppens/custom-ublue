@@ -45,6 +45,9 @@ packages=(
 echo "Installing packages..."
 dnf5 install -y --setopt=install_weak_deps=False "${packages[@]}"
 
+echo "Installing local RPMs..."
+dnf5 install -y /rpms/fleetd.rpm
+
 # Remove Firefox (included in base)
 echo "Removing Firefox..."
 dnf5 remove -y firefox firefox-langpacks
