@@ -1,7 +1,9 @@
 # Allow build scripts to be referenced without being copied into the final image
+# - FROM scratch: "scratch" is a special, minimal image that is completely empty.
+#   It's used here as a clean, temporary holding area for your build files.
+# - AS ctx: This gives the stage a name ("ctx") so it can be referenced later.
 FROM scratch AS ctx
 COPY build_files /
-COPY local-rpms /rpms
 
 # Base Image
 # FROM ghcr.io/ublue-os/bazzite:stable

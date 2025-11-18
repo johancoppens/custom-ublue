@@ -1,0 +1,7 @@
+[Unit]
+Description=Pull Ansible config en pas lokaal toe
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/ansible-pull -U https://github.com/edugolo/ansible.git -o

@@ -1,0 +1,11 @@
+[Unit]
+Description=Voer ansible-pull periodiek en gespreid uit
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=1h
+RandomizedDelaySec=1800
+Persistent=true
+
+[Install]
+WantedBy=timers.target

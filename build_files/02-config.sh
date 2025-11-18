@@ -27,8 +27,12 @@ fi
 
 # Ensure first-boot script is executable and service is enabled
 chmod 0755 /usr/libexec/schoolbx-firstboot-user.sh || true
+
 mkdir -p /usr/lib/systemd/system/multi-user.target.wants
 ln -sf /usr/lib/systemd/system/schoolbx-firstboot-user.service \
   /usr/lib/systemd/system/multi-user.target.wants/schoolbx-firstboot-user.service || true
 
+mkdir -p /usr/lib/systemd/user/timers.target.wants
+ln -sf /usr/lib/systemd/user/ansible-pull.timer \
+  /usr/lib/systemd/user/timers.target.wants/ansible-pull.timer
 

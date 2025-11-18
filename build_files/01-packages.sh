@@ -35,19 +35,29 @@ packages=(
     "gvfs-afc"
     "gvfs-mtp"
     "gvfs-smb"
-    "dconf"
-    "bootc"
+    "ansible-core"
+    "git"
+    # "dconf"
+    # "bootc"
     "plymouth-plugin-script"
     "libreoffice"
     "libreoffice-langpack-nl"
+    # "fleetctl"  # Added fleet-osquery package
 )
+
 
 echo "Installing packages..."
 dnf5 install -y --setopt=install_weak_deps=False "${packages[@]}"
 
-echo "Installing local RPMs..."
-dnf5 install -y /rpms/fleetd.rpm
+
 
 # Remove Firefox (included in base)
 echo "Removing Firefox..."
 dnf5 remove -y firefox firefox-langpacks
+
+# Installeer de community.general collectie (voor flatpak support)
+# We installeren dit system-wide (-p /usr/share/ansible/collections)
+ansible-galaxy collection install community.general -p /usr/share/ansible/collections
+
+
+
