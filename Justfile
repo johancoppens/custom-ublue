@@ -313,10 +313,16 @@ _run-vm $target_image $tag $type $config:
     run_args+=(--env "CPU_CORES=4")
     run_args+=(--env "RAM_SIZE=16G")
     run_args+=(--env "DISK_SIZE=20G")
-    run_args+=(--env "EXTRA_ARGS=-netdev user,id=net0,hostfwd=tcp::2222-:22")
+    # run_args+=(--env "EXTRA_ARGS=-device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp:0.0.0.0:2222-:22")
+    # We gebruiken 'ARGUMENTS' zodat de container het snapt.
+    # We voegen '-device' toe zodat de VM een netwerkkaart heeft.
+    # We gebruiken '0.0.0.0' zodat Podman erbij kan.
+    run_args+=(--env "ARGUMENTS=-device virtio-net-pci,netdev=net0 -netdev user,id=net0,hostfwd=tcp:0.0.0.0:2222-:22")
+    run_args+=(--publish "127.0.0.1:2222:2222")
     run_args+=(--env "TPM=Y")
-    run_args+=(--env "GPU=N")
+    run_args+=(--env "GPU=Y")
     run_args+=(--device=/dev/kvm)
+    run_args+=(--device=/dev/vhost-vsock)
     run_args+=(--volume "${PWD}/${image_file}":"/boot.${type}")
     run_args+=(docker.io/qemux/qemu)
 

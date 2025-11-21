@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# --- CONFIGURATIE ---
+FOCUS_USER="focus"
+FOCUS_TTY="/dev/tty4"
+VT_NUMBER="4"
+CURRENT_VT="2" 
+
+# PAS DIT AAN: Het pad naar jouw Electron App
+APP_CMD="/usr/bin/gnome-text-editor" 
+
+# --- EINDE CONFIGURATIE ---
+
+# Commando voor Cage (zonder -s, dus VT switch geblokkeerd)
+CAGE_CMD="/usr/bin/cage -- $APP_CMD"
+
+# 1. TTY Rechten fixen
+if ! chown $FOCUS_USER:tty $FOCUS_TTY; then
+    echo "Fout: Kon geen rechten instellen op $FOCUS_TTY"
+    exit 1
+fi
+chmod 620 $FOCUS_TTY
+
+# 2. Service starten via systemd
+# We gebruiken de bewezen syntax zonder arrays om quote-problemen te voorkomen.
+systemd-run --unit=focus-session \
+    --description="Focus Mode" \
+    --service-type=simple \
+    --property=User=$FOCUS_USER \
+    --property=PAMName=login \
+    --property=TTYPath=$FOCUS_TTY \
+    --property=StandardInput=tty \
+    --property=StandardOutput=tty \
+    --property=UtmpIdentifier=tty$VT_NUMBER \
+    --property=UtmpMode=user \
+    --property=SupplementaryGroups="video input render tty" \
+    --property=Environment="WLR_NO_HARDWARE_CURSORS=1" \
+    --property=Environment="WLR_RENDERER=pixman" \
+    --property="ExecStopPost=+/usr/bin/chvt $CURRENT_VT" \
+    $CAGE_CMD
+
+# 3. Switchen
+if [ $? -eq 0 ]; then
+    sleep 1
+    chvt $VT_NUMBER
+else
+    echo "Fout bij starten sessie"
+    exit 1
+fi

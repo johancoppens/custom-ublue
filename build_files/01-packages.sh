@@ -43,6 +43,7 @@ packages=(
     "libreoffice"
     "libreoffice-langpack-nl"
     # "fleetctl"  # Added fleet-osquery package
+    "cage"
 )
 
 
@@ -54,6 +55,8 @@ dnf5 install -y --setopt=install_weak_deps=False "${packages[@]}"
 # Remove Firefox (included in base)
 echo "Removing Firefox..."
 dnf5 remove -y firefox firefox-langpacks
+
+dnf5 clean all 
 
 # Installeer de community.general collectie (voor flatpak support)
 # We installeren dit system-wide (-p /usr/share/ansible/collections)
