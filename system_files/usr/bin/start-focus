@@ -30,7 +30,8 @@ systemd-run --unit=focus-session \
     --property=PAMName=login \
     --property=TTYPath=$FOCUS_TTY \
     --property=StandardInput=tty \
-    --property=StandardOutput=tty \
+    --property=StandardOutput=journal \
+    --property=StandardError=journal \
     --property=UtmpIdentifier=tty$VT_NUMBER \
     --property=UtmpMode=user \
     --property=SupplementaryGroups="video input render tty" \
