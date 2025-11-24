@@ -7,7 +7,7 @@ VT_NUMBER="4"
 CURRENT_VT="2" 
 
 # PAS DIT AAN: Het pad naar jouw Electron App
-APP_CMD="/usr/bin/gnome-text-editor" 
+APP_CMD="/usr/bin/focus-app"
 
 # --- EINDE CONFIGURATIE ---
 

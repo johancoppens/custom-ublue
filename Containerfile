@@ -4,6 +4,7 @@
 # - AS ctx: This gives the stage a name ("ctx") so it can be referenced later.
 FROM scratch AS ctx
 COPY build_files /
+COPY local_rpms /local_rpms
 
 # Base Image
 # FROM ghcr.io/ublue-os/bazzite:stable

@@ -10,10 +10,18 @@ echo "Focus mode: Installing packages..."
 packages=(
     # cage is a Wayland kiosk where we can run a single application
     "cage"
-    "gnome-text-editor"
 )
 
 dnf5 install -y --setopt=install_weak_deps=False "${packages[@]}"
+
+echo "Focus mode: Installing focus-app RPM..."
+RPM_DIR="/ctx/local_rpms"
+FOCUS_RPM=$(find "$RPM_DIR" -maxdepth 1 -type f -name 'focus-app-*.rpm' | sort | tail -n 1)
+if [[ -z "${FOCUS_RPM:-}" ]]; then
+    echo "No focus-app RPM found in $RPM_DIR" >&2
+    exit 1
+fi
+dnf5 install -y "$FOCUS_RPM"
 
 echo "Focus mode: User creation..."
 # Create user focus without password

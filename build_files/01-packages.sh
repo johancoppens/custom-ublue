@@ -43,7 +43,7 @@ packages=(
     "libreoffice"
     "libreoffice-langpack-nl"
     # "fleetctl"  # Added fleet-osquery package
-    "cage"
+    # "cage"
 )
 
 
