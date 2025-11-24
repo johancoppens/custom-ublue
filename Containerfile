@@ -4,7 +4,7 @@
 # - AS ctx: This gives the stage a name ("ctx") so it can be referenced later.
 FROM scratch AS ctx
 COPY build_files /
-COPY local_rpms /local_rpms
+COPY features /features
 
 # Base Image
 # FROM ghcr.io/ublue-os/bazzite:stable
@@ -64,12 +64,13 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=tmpfs,dst=/tmp \
     /usr/bin/bash /ctx/03-gnome-dconf.sh
 
-# 5) Focus Mode configuration
+# 5) Optional Focus Mode feature (comment this block out to disable)
+COPY features/focus-mode/system_files/ /
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
     --mount=type=tmpfs,dst=/tmp \
-    /usr/bin/bash /ctx/04-focus.sh
+    /usr/bin/bash /ctx/features/focus-mode/install.sh
     
     
 ### LINTING

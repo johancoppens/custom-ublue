@@ -15,10 +15,9 @@ packages=(
 dnf5 install -y --setopt=install_weak_deps=False "${packages[@]}"
 
 echo "Focus mode: Installing focus-app RPM..."
-RPM_DIR="/ctx/local_rpms"
-FOCUS_RPM=$(find "$RPM_DIR" -maxdepth 1 -type f -name 'focus-app-*.rpm' | sort | tail -n 1)
-if [[ -z "${FOCUS_RPM:-}" ]]; then
-    echo "No focus-app RPM found in $RPM_DIR" >&2
+FOCUS_RPM="/ctx/features/focus-mode/local_rpms/focus-app-0.0.0-1.fc43.x86_64.rpm"
+if [[ ! -f "$FOCUS_RPM" ]]; then
+    echo "Missing focus RPM at $FOCUS_RPM" >&2
     exit 1
 fi
 dnf5 install -y "$FOCUS_RPM"
