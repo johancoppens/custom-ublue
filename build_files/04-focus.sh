@@ -23,12 +23,6 @@ if [[ -z "${FOCUS_RPM:-}" ]]; then
 fi
 dnf5 install -y "$FOCUS_RPM"
 
-echo "Focus mode: User creation..."
-# Create user focus without password
-useradd -m -s /bin/bash focus && \
-    passwd -d focus
-
-
 echo "Focus mode: Updating icon cache..."
 gtk-update-icon-cache /usr/share/icons/hicolor
 
