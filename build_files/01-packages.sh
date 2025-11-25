@@ -39,9 +39,9 @@ packages=(
     "git"
     # "dconf"
     # "bootc"
-    "plymouth-plugin-script"
-    "libreoffice"
-    "libreoffice-langpack-nl"
+    # "plymouth-plugin-script"
+    # "libreoffice"
+    # "libreoffice-langpack-nl"
     # "fleetctl"  # Added fleet-osquery package
     # "cage"
 )
